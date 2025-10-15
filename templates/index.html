@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newborn Health Monitoring and Risk Assessment System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Newborn Health Monitoring and Risk Assessment System</h1>
+        </header>
+
+        <main>
+            <form id="prediction-form">
+                <div class="form-section">
+                    <h2>Basic Newborn Data</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Gestational Age (weeks)</label>
+                            <input type="number" step="0.1" name="gestational_age_weeks" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Birth Weight (kg)</label>
+                            <input type="number" step="0.01" name="birth_weight_kg" required min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Birth Length (cm)</label>
+                            <input type="number" step="0.1" name="birth_length_cm" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Birth Head Circumference (cm)</label>
+                            <input type="number" step="0.1" name="birth_head_circumference_cm" required min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <select name="gender" required>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Daily Data</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Age (days)</label>
+                            <input type="number" name="age_days" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Current Weight (kg)</label>
+                            <input type="number" step="0.01" name="weight_kg" required min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Current Length (cm)</label>
+                            <input type="number" step="0.1" name="length_cm" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Current Head Circumference (cm)</label>
+                            <input type="number" step="0.1" name="head_circumference_cm" required min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Vital Signs</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Temperature (°C)</label>
+                            <input type="number" step="0.1" name="temperature_c" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Heart Rate (bpm)</label>
+                            <input type="number" name="heart_rate_bpm" required min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Respiratory Rate (breaths/min)</label>
+                            <input type="number" name="respiratory_rate_bpm" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Oxygen Saturation (%)</label>
+                            <input type="number" name="oxygen_saturation" required min="0" max="100">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Feeding and Output Data</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Feeding Type</label>
+                            <select name="feeding_type" required>
+                                <option value="Breastfeeding">Breastfeeding</option>
+                                <option value="Formula">Formula</option>
+                                <option value="Mixed">Mixed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Feeding Frequency (per day)</label>
+                            <input type="number" name="feeding_frequency_per_day" required min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Urine Output Count</label>
+                            <input type="number" name="urine_output_count" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Stool Count</label>
+                            <input type="number" name="stool_count" required min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Additional Data</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Jaundice Level (mg/dl)</label>
+                            <input type="number" step="0.1" name="jaundice_level_mg_dl" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Apgar Score</label>
+                            <input type="number" step="0.1" name="apgar_score" required min="0" max="10">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Immunizations Done</label>
+                            <select name="immunizations_done" required>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Reflexes Normal</label>
+                            <select name="reflexes_normal" required>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit">Assess Risk Level</button>
+            </form>
+
+            <div id="result" class="hidden">
+                <h2>Assessment Result</h2>
+                <div id="risk-level"></div>
+                <div id="confidence"></div>
+                <div id="recommendations" class="hidden">
+                    <h3>Recommendations:</h3>
+                    <ul id="recommendations-list"></ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
