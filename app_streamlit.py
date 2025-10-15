@@ -21,14 +21,14 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
 <style>
-    /* Dark theme styling */
+    /* White background styling */
     .stApp {
-        background-color: #1e1e1e;
+        background-color: #ffffff;
     }
     
     .main-header {
         text-align: center;
-        color: white;
+        color: #333;
         margin-bottom: 2rem;
         font-size: 2rem;
         font-weight: bold;
@@ -115,13 +115,10 @@ def load_model():
     try:
         if os.path.exists("model.pkl"):
             model_data = joblib.load("model.pkl")
-            st.success("✅ Model loaded successfully!")
             return model_data
         else:
-            st.warning("⚠️ Model file not found. Training new model...")
             return train_new_model()
     except Exception as e:
-        st.error(f"❌ Error loading model: {e}")
         return train_new_model()
 
 def train_new_model():
@@ -179,7 +176,6 @@ def train_new_model():
         
         # Save to file
         joblib.dump(model_data, "model.pkl")
-        st.success("✅ New model trained and saved successfully!")
         return model_data
         
     except Exception as e:
@@ -336,37 +332,37 @@ def main():
                 
                 # Convert prediction to readable format
                 if isinstance(prediction, (int, np.integer)):
-                    risk_level = "At Risk" if prediction == 1 else "Healthy"
+                    risk_level = "في خطر" if prediction == 1 else "مفيش خطر"
                 else:
                     if str(prediction).lower() in ['at risk', 'atrisk', '1']:
-                        risk_level = "At Risk"
+                        risk_level = "في خطر"
                     else:
-                        risk_level = "Healthy"
+                        risk_level = "مفيش خطر"
                 
                 # Display result
-                if risk_level == "At Risk":
-                    st.markdown(f'<div class="risk-high"><h3>Risk Level: {risk_level}</h3><p>Confidence: {confidence:.1f}%</p></div>', unsafe_allow_html=True)
+                if risk_level == "في خطر":
+                    st.markdown(f'<div class="risk-high"><h3>{risk_level}</h3><p>يحتاج يدخل الحضانة</p></div>', unsafe_allow_html=True)
                 else:
-                    st.markdown(f'<div class="risk-low"><h3>Risk Level: {risk_level}</h3><p>Confidence: {confidence:.1f}%</p></div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="risk-low"><h3>{risk_level}</h3><p>مش محتاج يدخل الحضانة</p></div>', unsafe_allow_html=True)
                 
                 # Recommendations
-                st.subheader("Recommendations")
-                if risk_level == "At Risk":
+                st.subheader("التوصيات")
+                if risk_level == "في خطر":
                     st.warning("""
-                    **Immediate Actions Required:**
-                    - Consult with a pediatrician immediately
-                    - Monitor vital signs closely
-                    - Ensure proper hydration and nutrition
-                    - Schedule follow-up appointments
-                    - Consider additional monitoring equipment
+                    **إجراءات فورية مطلوبة:**
+                    - استشارة طبيب الأطفال فوراً
+                    - مراقبة العلامات الحيوية عن كثب
+                    - التأكد من الترطيب والتغذية المناسبة
+                    - تحديد مواعيد متابعة
+                    - النظر في معدات المراقبة الإضافية
                     """)
                 else:
                     st.success("""
-                    **Continue Current Care:**
-                    - Continue regular monitoring
-                    - Maintain current feeding schedule
-                    - Schedule routine check-ups
-                    - Keep track of growth milestones
+                    **متابعة الرعاية الحالية:**
+                    - متابعة المراقبة المنتظمة
+                    - الحفاظ على جدول التغذية الحالي
+                    - تحديد مواعيد الفحص الروتينية
+                    - تتبع معالم النمو
                     """)
     
 
