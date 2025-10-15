@@ -34,12 +34,19 @@ st.markdown("""
         font-weight: bold;
     }
     
+    /* Container styling */
+    .main-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+    
     /* Card styling */
     .section-card {
         background-color: #f5f5f5;
         padding: 1.5rem;
         border-radius: 8px;
-        margin: 1rem 0;
+        margin: 0.5rem 0;
         border: 1px solid #e0e0e0;
     }
     
@@ -216,6 +223,9 @@ def main():
         st.error("❌ Unable to load or train model. Please check your data files.")
         return
     
+    # Main container
+    st.markdown('<div class="main-container">', unsafe_allow_html=True)
+    
     # Form sections
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<h3 class="section-title">Basic Newborn Data</h3>', unsafe_allow_html=True)
@@ -332,39 +342,41 @@ def main():
                 
                 # Convert prediction to readable format
                 if isinstance(prediction, (int, np.integer)):
-                    risk_level = "في خطر" if prediction == 1 else "مفيش خطر"
+                    risk_level = "At Risk" if prediction == 1 else "No Risk"
                 else:
                     if str(prediction).lower() in ['at risk', 'atrisk', '1']:
-                        risk_level = "في خطر"
+                        risk_level = "At Risk"
                     else:
-                        risk_level = "مفيش خطر"
+                        risk_level = "No Risk"
                 
                 # Display result
-                if risk_level == "في خطر":
-                    st.markdown(f'<div class="risk-high"><h3>{risk_level}</h3><p>يحتاج يدخل الحضانة</p></div>', unsafe_allow_html=True)
+                if risk_level == "At Risk":
+                    st.markdown(f'<div class="risk-high"><h3>{risk_level}</h3><p>Needs NICU admission</p></div>', unsafe_allow_html=True)
                 else:
-                    st.markdown(f'<div class="risk-low"><h3>{risk_level}</h3><p>مش محتاج يدخل الحضانة</p></div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="risk-low"><h3>{risk_level}</h3><p>No NICU admission needed</p></div>', unsafe_allow_html=True)
                 
                 # Recommendations
-                st.subheader("التوصيات")
-                if risk_level == "في خطر":
+                st.subheader("Recommendations")
+                if risk_level == "At Risk":
                     st.warning("""
-                    **إجراءات فورية مطلوبة:**
-                    - استشارة طبيب الأطفال فوراً
-                    - مراقبة العلامات الحيوية عن كثب
-                    - التأكد من الترطيب والتغذية المناسبة
-                    - تحديد مواعيد متابعة
-                    - النظر في معدات المراقبة الإضافية
+                    **Immediate Actions Required:**
+                    - Consult with a pediatrician immediately
+                    - Monitor vital signs closely
+                    - Ensure proper hydration and nutrition
+                    - Schedule follow-up appointments
+                    - Consider additional monitoring equipment
                     """)
                 else:
                     st.success("""
-                    **متابعة الرعاية الحالية:**
-                    - متابعة المراقبة المنتظمة
-                    - الحفاظ على جدول التغذية الحالي
-                    - تحديد مواعيد الفحص الروتينية
-                    - تتبع معالم النمو
+                    **Continue Current Care:**
+                    - Continue regular monitoring
+                    - Maintain current feeding schedule
+                    - Schedule routine check-ups
+                    - Keep track of growth milestones
                     """)
     
+    # Close main container
+    st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
