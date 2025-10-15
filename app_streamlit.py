@@ -108,10 +108,20 @@ st.markdown("""
         margin: 1rem 0;
     }
     
-    /* Hide Streamlit branding */
+    /* Hide Streamlit branding and reduce spacing */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
+    
+    /* Remove extra spacing */
+    .stApp > div {
+        padding-top: 0 !important;
+    }
+    
+    .main .block-container {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -324,6 +334,7 @@ def main():
     }
     
     # Assessment button
+    st.markdown('<div style="margin-top: 1rem;">', unsafe_allow_html=True)
     if st.button("Assess Risk Level", type="primary", use_container_width=True):
         with st.spinner("Analyzing health parameters..."):
             # Preprocess input
@@ -374,6 +385,8 @@ def main():
                     - Schedule routine check-ups
                     - Keep track of growth milestones
                     """)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
     
     # Close main container
     st.markdown('</div>', unsafe_allow_html=True)
