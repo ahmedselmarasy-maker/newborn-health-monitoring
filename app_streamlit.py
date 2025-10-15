@@ -306,14 +306,6 @@ def main():
                         - Keep track of growth milestones
                         """)
     
-    # Footer
-    st.markdown("---")
-    st.markdown("""
-    <div style="text-align: center; color: #666; font-size: 0.9em;">
-        <p>⚠️ <strong>Medical Disclaimer:</strong> This application is for educational purposes only. Always consult healthcare professionals for medical decisions.</p>
-        <p>© 2025 Ahmed Selmarasy - Newborn Health Monitoring System</p>
-    </div>
-    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
