@@ -13,7 +13,7 @@ warnings.filterwarnings('ignore')
 # Page configuration
 st.set_page_config(
     page_title="Newborn Health Monitoring System",
-    page_icon="👶",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -21,34 +21,90 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
 <style>
+    /* Dark theme styling */
+    .stApp {
+        background-color: #1e1e1e;
+    }
+    
     .main-header {
         text-align: center;
-        color: #2c3e50;
+        color: white;
         margin-bottom: 2rem;
+        font-size: 2rem;
+        font-weight: bold;
     }
+    
+    /* Card styling */
+    .section-card {
+        background-color: #f5f5f5;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+        border: 1px solid #e0e0e0;
+    }
+    
+    .section-title {
+        color: #333;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+    
+    /* Input styling */
+    .stTextInput > div > div > input,
+    .stNumberInput > div > div > input,
+    .stSelectbox > div > div > select {
+        border: 1px solid #ff4444 !important;
+        border-radius: 4px !important;
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stNumberInput > div > div > input:focus,
+    .stSelectbox > div > div > select:focus {
+        border-color: #ff4444 !important;
+        box-shadow: 0 0 0 1px #ff4444 !important;
+    }
+    
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(90deg, #4285f4, #9c27b0);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 2rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+        width: 100%;
+        margin-top: 2rem;
+    }
+    
+    .stButton > button:hover {
+        background: linear-gradient(90deg, #3367d6, #7b1fa2);
+    }
+    
+    /* Risk result styling */
     .risk-high {
         background-color: #ffebee;
         color: #c62828;
         padding: 1rem;
-        border-radius: 0.5rem;
+        border-radius: 8px;
         border-left: 4px solid #c62828;
         margin: 1rem 0;
     }
+    
     .risk-low {
         background-color: #e8f5e8;
         color: #2e7d32;
         padding: 1rem;
-        border-radius: 0.5rem;
+        border-radius: 8px;
         border-left: 4px solid #2e7d32;
         margin: 1rem 0;
     }
-    .metric-card {
-        background-color: #f8f9fa;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border: 1px solid #dee2e6;
-        margin: 0.5rem 0;
-    }
+    
+    /* Hide Streamlit branding */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -155,7 +211,7 @@ def preprocess_input(data, model_data):
 
 def main():
     # Header
-    st.markdown('<h1 class="main-header">👶 Newborn Health Monitoring and Risk Assessment System</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">Newborn Health Monitoring and Risk Assessment System</h1>', unsafe_allow_html=True)
     
     # Load model
     model_data = load_model()
@@ -164,44 +220,77 @@ def main():
         st.error("❌ Unable to load or train model. Please check your data files.")
         return
     
-    # Sidebar for input
-    st.sidebar.header("📊 Health Parameters")
+    # Form sections
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    st.markdown('<h3 class="section-title">Basic Newborn Data</h3>', unsafe_allow_html=True)
     
-    # Basic Newborn Data
-    st.sidebar.subheader("👶 Basic Newborn Data")
-    gestational_age = st.sidebar.number_input("Gestational Age (weeks)", min_value=0.0, max_value=50.0, value=38.0, step=0.1)
-    birth_weight = st.sidebar.number_input("Birth Weight (kg)", min_value=0.0, max_value=10.0, value=3.2, step=0.01)
-    birth_length = st.sidebar.number_input("Birth Length (cm)", min_value=0.0, max_value=100.0, value=50.0, step=0.1)
-    birth_head_circumference = st.sidebar.number_input("Birth Head Circumference (cm)", min_value=0.0, max_value=50.0, value=35.0, step=0.1)
-    gender = st.sidebar.selectbox("Gender", ["Female", "Male"])
+    col1, col2 = st.columns(2)
+    with col1:
+        gestational_age = st.number_input("Gestational Age (weeks)", min_value=0.0, max_value=50.0, value=38.0, step=0.1)
+        birth_length = st.number_input("Birth Length (cm)", min_value=0.0, max_value=100.0, value=50.0, step=0.1)
+        gender = st.selectbox("Gender", ["Female", "Male"])
     
-    # Daily Data
-    st.sidebar.subheader("📅 Daily Data")
-    age_days = st.sidebar.number_input("Age (days)", min_value=0, max_value=365, value=7)
-    current_weight = st.sidebar.number_input("Current Weight (kg)", min_value=0.0, max_value=15.0, value=3.3, step=0.01)
-    current_length = st.sidebar.number_input("Current Length (cm)", min_value=0.0, max_value=120.0, value=51.0, step=0.1)
-    current_head_circumference = st.sidebar.number_input("Current Head Circumference (cm)", min_value=0.0, max_value=60.0, value=36.0, step=0.1)
+    with col2:
+        birth_weight = st.number_input("Birth Weight (kg)", min_value=0.0, max_value=10.0, value=3.2, step=0.01)
+        birth_head_circumference = st.number_input("Birth Head Circumference (cm)", min_value=0.0, max_value=50.0, value=35.0, step=0.1)
     
-    # Vital Signs
-    st.sidebar.subheader("💓 Vital Signs")
-    temperature = st.sidebar.number_input("Temperature (°C)", min_value=30.0, max_value=45.0, value=37.0, step=0.1)
-    heart_rate = st.sidebar.number_input("Heart Rate (bpm)", min_value=0, max_value=300, value=120)
-    respiratory_rate = st.sidebar.number_input("Respiratory Rate (breaths/min)", min_value=0, max_value=100, value=40)
-    oxygen_saturation = st.sidebar.number_input("Oxygen Saturation (%)", min_value=0, max_value=100, value=98)
+    st.markdown('</div>', unsafe_allow_html=True)
     
-    # Feeding and Output Data
-    st.sidebar.subheader("🍼 Feeding and Output Data")
-    feeding_type = st.sidebar.selectbox("Feeding Type", ["Breastfeeding", "Formula", "Mixed"])
-    feeding_frequency = st.sidebar.number_input("Feeding Frequency (per day)", min_value=0, max_value=20, value=8)
-    urine_output = st.sidebar.number_input("Urine Output Count", min_value=0, max_value=20, value=6)
-    stool_count = st.sidebar.number_input("Stool Count", min_value=0, max_value=20, value=3)
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    st.markdown('<h3 class="section-title">Current Monitoring Data</h3>', unsafe_allow_html=True)
     
-    # Additional Data
-    st.sidebar.subheader("🔬 Additional Data")
-    jaundice_level = st.sidebar.number_input("Jaundice Level (mg/dl)", min_value=0.0, max_value=50.0, value=8.0, step=0.1)
-    apgar_score = st.sidebar.number_input("Apgar Score", min_value=0.0, max_value=10.0, value=8.0, step=0.1)
-    immunizations_done = st.sidebar.selectbox("Immunizations Done", ["Yes", "No"])
-    reflexes_normal = st.sidebar.selectbox("Reflexes Normal", ["Yes", "No"])
+    col1, col2 = st.columns(2)
+    with col1:
+        age_days = st.number_input("Age (days)", min_value=0, max_value=365, value=7)
+        current_length = st.number_input("Current Length (cm)", min_value=0.0, max_value=120.0, value=51.0, step=0.1)
+    
+    with col2:
+        current_weight = st.number_input("Current Weight (kg)", min_value=0.0, max_value=15.0, value=3.3, step=0.01)
+        current_head_circumference = st.number_input("Current Head Circumference (cm)", min_value=0.0, max_value=60.0, value=36.0, step=0.1)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    st.markdown('<h3 class="section-title">Vital Signs</h3>', unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        temperature = st.number_input("Temperature (°C)", min_value=30.0, max_value=45.0, value=37.0, step=0.1)
+        respiratory_rate = st.number_input("Respiratory Rate (breaths/min)", min_value=0, max_value=100, value=40)
+    
+    with col2:
+        heart_rate = st.number_input("Heart Rate (bpm)", min_value=0, max_value=300, value=120)
+        oxygen_saturation = st.number_input("Oxygen Saturation (%)", min_value=0, max_value=100, value=98)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    st.markdown('<h3 class="section-title">Feeding and Output Data</h3>', unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        feeding_type = st.selectbox("Feeding Type", ["Breastfeeding", "Formula", "Mixed"])
+        urine_output = st.number_input("Urine Output Count", min_value=0, max_value=20, value=6)
+    
+    with col2:
+        feeding_frequency = st.number_input("Feeding Frequency (per day)", min_value=0, max_value=20, value=8)
+        stool_count = st.number_input("Stool Count", min_value=0, max_value=20, value=3)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    st.markdown('<h3 class="section-title">Assessment Data</h3>', unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        jaundice_level = st.number_input("Jaundice Level (mg/dl)", min_value=0.0, max_value=50.0, value=8.0, step=0.1)
+        immunizations_done = st.selectbox("Immunizations Done", ["Yes", "No"])
+    
+    with col2:
+        apgar_score = st.number_input("Apgar Score", min_value=0.0, max_value=10.0, value=8.0, step=0.1)
+        reflexes_normal = st.selectbox("Reflexes Normal", ["Yes", "No"])
+    
+    st.markdown('</div>', unsafe_allow_html=True)
     
     # Collect all data
     input_data = {
@@ -228,83 +317,57 @@ def main():
         'reflexes_normal': reflexes_normal
     }
     
-    # Main content area
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        st.subheader("📋 Current Health Status")
-        
-        # Display current values
-        col_a, col_b = st.columns(2)
-        
-        with col_a:
-            st.metric("Gestational Age", f"{gestational_age} weeks")
-            st.metric("Birth Weight", f"{birth_weight} kg")
-            st.metric("Current Weight", f"{current_weight} kg")
-            st.metric("Temperature", f"{temperature}°C")
-            st.metric("Heart Rate", f"{heart_rate} bpm")
-        
-        with col_b:
-            st.metric("Age", f"{age_days} days")
-            st.metric("Length", f"{current_length} cm")
-            st.metric("Head Circumference", f"{current_head_circumference} cm")
-            st.metric("Oxygen Saturation", f"{oxygen_saturation}%")
-            st.metric("Apgar Score", f"{apgar_score}")
-    
-    with col2:
-        st.subheader("🎯 Risk Assessment")
-        
-        # Predict button
-        if st.button("🔍 Assess Risk Level", type="primary", use_container_width=True):
-            with st.spinner("Analyzing health parameters..."):
-                # Preprocess input
-                processed_data = preprocess_input(input_data, model_data)
+    # Assessment button
+    if st.button("Assess Risk Level", type="primary", use_container_width=True):
+        with st.spinner("Analyzing health parameters..."):
+            # Preprocess input
+            processed_data = preprocess_input(input_data, model_data)
+            
+            if processed_data is not None:
+                # Make prediction
+                prediction = model_data['model'].predict(processed_data)[0]
                 
-                if processed_data is not None:
-                    # Make prediction
-                    prediction = model_data['model'].predict(processed_data)[0]
-                    
-                    # Get prediction probabilities
-                    try:
-                        probabilities = model_data['model'].predict_proba(processed_data)[0]
-                        confidence = max(probabilities) * 100
-                    except:
-                        confidence = 85.0
-                    
-                    # Convert prediction to readable format
-                    if isinstance(prediction, (int, np.integer)):
-                        risk_level = "At Risk" if prediction == 1 else "Healthy"
+                # Get prediction probabilities
+                try:
+                    probabilities = model_data['model'].predict_proba(processed_data)[0]
+                    confidence = max(probabilities) * 100
+                except:
+                    confidence = 85.0
+                
+                # Convert prediction to readable format
+                if isinstance(prediction, (int, np.integer)):
+                    risk_level = "At Risk" if prediction == 1 else "Healthy"
+                else:
+                    if str(prediction).lower() in ['at risk', 'atrisk', '1']:
+                        risk_level = "At Risk"
                     else:
-                        if str(prediction).lower() in ['at risk', 'atrisk', '1']:
-                            risk_level = "At Risk"
-                        else:
-                            risk_level = "Healthy"
-                    
-                    # Display result
-                    if risk_level == "At Risk":
-                        st.markdown(f'<div class="risk-high"><h3>⚠️ Risk Level: {risk_level}</h3><p>Confidence: {confidence:.1f}%</p></div>', unsafe_allow_html=True)
-                    else:
-                        st.markdown(f'<div class="risk-low"><h3>✅ Risk Level: {risk_level}</h3><p>Confidence: {confidence:.1f}%</p></div>', unsafe_allow_html=True)
-                    
-                    # Recommendations
-                    st.subheader("💡 Recommendations")
-                    if risk_level == "At Risk":
-                        st.warning("""
-                        **Immediate Actions Required:**
-                        - Consult with a pediatrician immediately
-                        - Monitor vital signs closely
-                        - Ensure proper hydration and nutrition
-                        - Schedule follow-up appointments
-                        - Consider additional monitoring equipment
-                        """)
-                    else:
-                        st.success("""
-                        **Continue Current Care:**
-                        - Continue regular monitoring
-                        - Maintain current feeding schedule
-                        - Schedule routine check-ups
-                        - Keep track of growth milestones
-                        """)
+                        risk_level = "Healthy"
+                
+                # Display result
+                if risk_level == "At Risk":
+                    st.markdown(f'<div class="risk-high"><h3>Risk Level: {risk_level}</h3><p>Confidence: {confidence:.1f}%</p></div>', unsafe_allow_html=True)
+                else:
+                    st.markdown(f'<div class="risk-low"><h3>Risk Level: {risk_level}</h3><p>Confidence: {confidence:.1f}%</p></div>', unsafe_allow_html=True)
+                
+                # Recommendations
+                st.subheader("Recommendations")
+                if risk_level == "At Risk":
+                    st.warning("""
+                    **Immediate Actions Required:**
+                    - Consult with a pediatrician immediately
+                    - Monitor vital signs closely
+                    - Ensure proper hydration and nutrition
+                    - Schedule follow-up appointments
+                    - Consider additional monitoring equipment
+                    """)
+                else:
+                    st.success("""
+                    **Continue Current Care:**
+                    - Continue regular monitoring
+                    - Maintain current feeding schedule
+                    - Schedule routine check-ups
+                    - Keep track of growth milestones
+                    """)
     
 
 if __name__ == "__main__":
