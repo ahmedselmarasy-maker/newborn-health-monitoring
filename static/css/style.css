@@ -708,6 +708,34 @@ input:valid {
         justify-content: center;
         display: flex;
     }
+    
+    .developer-profile {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .profile-img {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .created-by-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .created-by-text {
+        order: 1;
+    }
+    
+    .creator-avatar {
+        order: 2;
+    }
+    
+    .hosted-badge {
+        order: 3;
+    }
 }
 
 @media (max-width: 480px) {
@@ -831,6 +859,52 @@ footer {
     font-size: 1.2em;
 }
 
+/* Developer Profile Styles */
+.developer-profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-image {
+    flex-shrink: 0;
+}
+
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #3498db;
+    object-fit: cover;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.profile-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+}
+
+.developer-info {
+    flex: 1;
+}
+
+.developer-info h4 {
+    margin-bottom: 8px;
+    color: #3498db;
+    font-size: 1.1em;
+}
+
+.developer-info p {
+    margin-bottom: 5px;
+    color: #bdc3c7;
+}
+
+.developer-info strong {
+    color: #ecf0f1;
+    font-size: 1.1em;
+}
+
 .footer-bottom {
     border-top: 1px solid #34495e;
     padding-top: 20px;
@@ -850,6 +924,75 @@ footer {
     padding: 10px;
     border-radius: 5px;
     border-left: 3px solid #e74c3c;
+}
+
+/* Created by Banner */
+.created-by-banner {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.created-by-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.created-by-text {
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.creator-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.creator-avatar:hover {
+    transform: scale(1.1);
+    border-color: #3498db;
+}
+
+.hosted-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #00c7b7, #00a8cc);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.hosted-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hosted-text {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.netlify-text {
+    font-weight: 700;
+}
+
+.netlify-icon {
+    font-size: 16px;
 }
 
 /* Print styles */
