@@ -14,7 +14,7 @@ warnings.filterwarnings('ignore')
 st.set_page_config(
     page_title="Newborn Health Monitoring System",
     page_icon="",
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="expanded"
 )
 
@@ -24,75 +24,103 @@ st.markdown("""
     /* White background styling */
     .stApp {
         background-color: #ffffff;
+        color: #222222;
     }
     
+    /* Main header - stronger contrast for small/mobile screens */
     .main-header {
         text-align: center;
-        color: #333;
-        margin-bottom: 2rem;
+        color: rgba(34,34,34,1) !important;
+        margin-bottom: 1.5rem;
         font-size: 2rem;
-        font-weight: bold;
+        font-weight: 700;
+        letter-spacing: -0.5px;
     }
     
     /* Container styling */
     .main-container {
-        max-width: 800px;
+        /* On larger screens use around 50% of viewport width, centered */
+        width: 50vw;
+        max-width: 900px;
+        min-width: 340px;
         margin: 0 auto;
         padding: 0 1rem;
+        box-sizing: border-box;
     }
     
     /* Card styling */
     .section-card {
-        background-color: #f5f5f5;
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin: 0.5rem 0;
-        border: 1px solid #e0e0e0;
+        background-color: #fbfbfb;
+        padding: 1.25rem;
+        border-radius: 10px;
+        margin: 0.75rem 0;
+        border: 1px solid #ececec;
     }
     
     .section-title {
-        color: #333;
-        font-size: 1.2rem;
-        font-weight: bold;
-        margin-bottom: 1rem;
+        color: rgba(34,34,34,1) !important;
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
     }
-    
-    /* Input styling */
+
+    /* Make all labels and text more visible */
+    label, .css-1kyxreq { /* some Streamlit label classes */
+        color: rgba(34,34,34,0.95) !important;
+        font-weight: 600;
+        opacity: 1 !important;
+    }
+
+    /* Input styling - darker text and visible placeholders */
+    input, textarea, select {
+        color: rgba(10,10,10,0.98) !important;
+        background-color: #ffffff !important;
+    }
+
+    ::placeholder {
+        color: rgba(60,60,60,0.65) !important;
+        opacity: 1 !important;
+    }
+
     .stTextInput > div > div > input,
     .stNumberInput > div > div > input,
-    .stSelectbox > div > div > select {
-        border: 1px solid #ff4444 !important;
-        border-radius: 4px !important;
+    .stSelectbox > div > div > select,
+    .stMultiSelect > div > div > div {
+        border: 1px solid #d0d0d0 !important;
+        border-radius: 8px !important;
+        padding: 0.5rem !important;
+        color: rgba(10,10,10,0.98) !important;
+        background: linear-gradient(180deg, #ffffff, #fbfbfb) !important;
     }
-    
+
     .stTextInput > div > div > input:focus,
     .stNumberInput > div > div > input:focus,
     .stSelectbox > div > div > select:focus {
-        border-color: #ff4444 !important;
-        box-shadow: 0 0 0 1px #ff4444 !important;
+        border-color: #a96bfa !important;
+        box-shadow: 0 0 0 3px rgba(169,107,250,0.12) !important;
     }
-    
-    /* Button styling */
+
+    /* Buttons keep original look but ensure text is visible */
     .stButton > button {
         background: linear-gradient(90deg, #4285f4, #9c27b0);
-        color: white;
+        color: #ffffff !important;
         border: none;
         border-radius: 8px;
-        padding: 0.75rem 2rem;
-        font-size: 1.1rem;
-        font-weight: bold;
+        padding: 0.6rem 1rem;
+        font-size: 1rem;
+        font-weight: 700;
         width: 100%;
-        margin-top: 2rem;
+        margin-top: 1rem;
     }
-    
+
     .stButton > button:hover {
-        background: linear-gradient(90deg, #3367d6, #7b1fa2);
+        filter: brightness(0.95);
     }
-    
+
     /* Risk result styling */
     .risk-high {
-        background-color: #ffebee;
-        color: #c62828;
+        background-color: #fff3f3;
+        color: #b71c1c;
         padding: 1rem;
         border-radius: 8px;
         border-left: 4px solid #c62828;
@@ -100,28 +128,38 @@ st.markdown("""
     }
     
     .risk-low {
-        background-color: #e8f5e8;
-        color: #2e7d32;
+        background-color: #f3fff4;
+        color: #1b5e20;
         padding: 1rem;
         border-radius: 8px;
         border-left: 4px solid #2e7d32;
         margin: 1rem 0;
     }
-    
+
     /* Hide Streamlit branding and reduce spacing */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
-    
-    /* Remove extra spacing */
+
+    /* Reduce extra spacing for mobile */
     .stApp > div {
         padding-top: 0 !important;
     }
-    
+
     .main .block-container {
-        padding-top: 1rem !important;
-        padding-bottom: 1rem !important;
+        padding-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
     }
+
+    /* Improve contrast on dark themes and mobile viewports */
+    @media (max-width: 600px) {
+        .main-header { font-size: 1.6rem; }
+        .section-card { padding: 1rem; }
+        .stTextInput > div > div > input, .stNumberInput > div > div > input { font-size: 1rem; }
+        /* On small screens let the container be full width */
+        .main-container { width: 100vw !important; padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
